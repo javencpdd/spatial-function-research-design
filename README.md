@@ -9,9 +9,11 @@
 | [研究模型基线](design/model-baseline.md) | 地图版本、双源状态、事件影响、验证义务、复核规划与功能判定 |
 | [MSRP 纸面案例](validation/msrp-cases.md) | 证据槽、独立来源、完整路线与三值可行性的手算检查 |
 | [实验设计](experiments/protocol.md) | H1—H4、E1—E6、首轮优先项和预先约定的评价口径 |
-| [设计待办](ROADMAP.md) | 当前设计任务、依赖与完成标准 |
+| [设计任务计划](ROADMAP.md) | D01—D05 的优先级、依赖、交付与验收顺序 |
 
 初始基线整理自开题报告和 Notion 现行笔记。Notion 继续维护全局架构、契约权威来源与历史档案。仓库以可比较的文本维护研究设计基线，修改时同时更新受影响的案例或实验判据，并在提交中说明理由。研究结论引用具体提交版本。
+
+接下来先完成事件影响闭包与证据要求，再收敛 MSRP、定稿 E2/E3 实验方案并进行跨模块纸面终审。[GitHub 任务列表](https://github.com/javencpdd/spatial-function-research-design/issues)记录详细验收项和进度；当前执行入口为 [D01](https://github.com/javencpdd/spatial-function-research-design/issues/1)。
 
 当前证据覆盖限定设计复核和纸面案例。参数标定与对照实验结果待取得。正式契约签发、外部互操作、服务开发和实机集成按工程线另行管理。
 
