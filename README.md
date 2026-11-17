@@ -11,12 +11,12 @@
 | [通道净宽证据判据](design/corridor-evidence.md) | D02 的证据槽、充分性、有效期、标定计划与十一类纸面案例 |
 | [MSRP 数学模型](design/msrp-model.md) | D03 的有限候选域、完整路线、三值可行性和最优性判据 |
 | [MSRP 纸面案例](validation/msrp-cases.md) | 二十类证据分配、路线成本、无解与最优性边界检查 |
-| [实验设计](experiments/protocol.md) | H1—H4、E1—E6、首轮优先项和预先约定的评价口径 |
+| [实验设计](experiments/protocol.md) | D04 的 E2/E3 真值、对照、统计、风险与样本量方案，关联 H1—H4/E1—E6 |
 | [设计任务计划](ROADMAP.md) | D01—D05 的优先级、依赖、交付与验收顺序 |
 
 初始基线整理自开题报告和 Notion 现行笔记。Notion 继续维护全局架构、契约权威来源与历史档案。仓库以可比较的文本维护研究设计基线，修改时同时更新受影响的案例或实验判据，并在提交中说明理由。研究结论引用具体提交版本。
 
-D01—D03 已完成限定模型设计与纸面复核，覆盖影响传播、净宽证据和完整复核路线。下一项 D04 定稿 E2/E3 实验方案，再由 D05 做跨模块终审并同步开题报告。详细验收项和交付版本见 [GitHub 任务列表](https://github.com/javencpdd/spatial-function-research-design/issues)。
+D01—D04 已完成限定模型、纸面复核及 E2/E3 实验设计。下一项 D05 做跨模块终审，走通完整场景并同步开题报告。正式实验的数据、标定、风险界限和样本量按方案取得后锁定。详细验收项和交付版本见 [GitHub 任务列表](https://github.com/javencpdd/spatial-function-research-design/issues)。
 
 当前证据覆盖限定设计复核和纸面案例。参数标定与对照实验结果待取得。正式契约签发、外部互操作、服务开发和实机集成按工程线另行管理。
 
