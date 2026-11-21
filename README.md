@@ -20,7 +20,7 @@
 | [E1 双源维护实验](experiments/dual-source-e1.md) | 双轴真值与知识切点、区间分支、主要对照、错误开放/封闭及弃权评分，十五项纸面复核 |
 | [E4 恢复与重开实验](experiments/recovery-e4.md) | 局部义务、重评/重开/替代/复发、三条时钟、错误恢复及非干扰，十八项纸面复核 |
 | [E5 条件可用性实验](experiments/availability-e5.md) | 请求与条件方案、五态证明、时窗/风险/应用及危险误放行评分，二十三项纸面复核 |
-| [S1—S8 工具复用与平台分工](experiments/readiness.md#tool-reuse) | 各模块可复用组件、领域代码、版本许可、本地调用及用户负责的建图、定位和导航 |
+| [S1—S8 工具复用与平台分工](experiments/readiness.md#tool-reuse) | 功能覆盖、源码/软件/权重获取、许可，以及 Ubuntu 20.04 主机、Thor T4000 与工作站的兼容边界 |
 | [研究设计终审与全线复审](design/review-baseline.md) | D05 三个场景及同步记录；§6 记录 Notion/GitHub 联审、规则修正与 D06—D10 当前进展 |
 | [设计任务计划](ROADMAP.md) | D01—D05、E1/E4/E5 的历史交付，及当前 D06—D10 设计顺序 |
 

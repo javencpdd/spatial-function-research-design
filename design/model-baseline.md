@@ -11,7 +11,7 @@
 | 步骤 | 输入及处理 | 可复用工具及需要编写的逻辑 | 产出与责任 |
 | --- | --- | --- | --- |
 | 1. 建立地图 | FAST-LIO2 点云及位姿，处理点云或同步图像的语义候选，校验时空信息及覆盖。 | FAST-LIO2；按数据选择 Open3D-ML，或 Grounding DINO/SAM 图像分割及三维投影。模型、数据转换、标定和融合需要匹配与试跑。 | 用户提供几何和定位；S2 接入地图及语义候选。 |
-| 2. 校验实体与关系 | 人工复核关键分割、校园名称、入口/出口、楼层和重要关系。 | Python UUID 为新实体生成编号，SQLite 保存身份及别名，Shapely/NetworkX 计算几何关系及保存图；人确认对象和关键关联。 | S2 提交地图、关联、分区和关系图修订。 |
+| 2. 校验实体与关系 | 人工复核关键分割、校园名称、入口/出口、楼层和重要关系。 | CloudCompare 提供点云查看、人工分割及测距；Python UUID 生成新实体编号，SQLite 保存身份及别名，Shapely/NetworkX 计算几何关系及保存图；人确认对象和关键关联。 | S2 提交地图、关联、分区和关系图修订。 |
 | 3. 定义可验收要求 | 登记净宽等功能要求、范围、证据模板及窗口，机器人 Profile、有限动作、允许终点和成本。 | JSON 配置、jsonschema 结构与参数检查、SQLite 版本索引。研究者定义要求、证据语义及未知处理，程序读取配置。 | S4 引用要求及模板，S5/S6 取得动作及能力输入。 |
 | 4. 接入记录及首次观测 | S1 接入维修、许可、人工报告及观测，保留原件、来源和双时间；S2 解析地点。 | Python csv/json 读取业务表，jsonschema 校验，名称/ID 索引与 Shapely STRtree 精确空间查询；MCAP/Rosbags 读取观测。需编写来源和字段适配。 | 合格输入进入 S3/S4，歧义保留候选。首次观测也经同一验收链。 |
 | 5. 形成复核需求 | 接收维修完成、异常线索、证据失效、地图更正或定时请求，分析功能影响。 | NetworkX 图遍历、Python 触发与属性映射规则、SQLite 事务。需实现 APCM、类型化闭包、义务模板实例化及去重。 | S4 登记/关联事件，产生范围、要求、截止和证据明确的义务。 |
@@ -24,6 +24,8 @@
 S8 为各步保存原始制品、策略与标定修订、摘要及审计关联。S7 也在第 7–8 步为复核作业用途提供约束。流程中的先后描述表示业务依赖，运行时各模块可多次交互。完整模型分别见下文 R1–R3、[D06](observation-bootstrap.md)、[MSRP](msrp-model.md)及[资料规格](../experiments/corridor-data-spec.md#management-inputs)。
 
 基础库的官方来源、版本、许可和六组本机调用见[工具复用核验](../experiments/readiness.md#tool-reuse)。jsonschema 提供[结构校验](https://python-jsonschema.readthedocs.io/en/stable/validate/)，NetworkX 提供[图遍历](https://networkx.org/documentation/stable/reference/algorithms/traversal.html)，Shapely 提供[空间索引和谓词查询](https://shapely.readthedocs.io/en/stable/strtree.html)，OR-Tools 提供[约束求解](https://developers.google.com/optimization/cp/cp_solver)。本课题将功能要求、资格和状态规则编码后调用这些工具。
+
+2026-11-22 补充平台条件：机械狗主机为 Ubuntu 20.04，算力盒子为 Thor T4000 / JetPack 7.2 / L4T Ubuntu 24.04，外部主机可按需选择。建议把机器人执行、现场采集及按需感知、工作站研究计算分开部署。当前按能力、源码/权重获取及兼容路径评估工具；实际数据效果另行实验。官方获取入口、感知输出边界和双主机兼容性见[工具能力](../experiments/readiness.md#tool-capability)及[平台分工](../experiments/readiness.md#platform-layout)。
 
 ### 第 3–10 步的限定串联检查
 
