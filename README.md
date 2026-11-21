@@ -9,8 +9,8 @@
 | [研究模型基线](design/model-baseline.md) | 地图版本、双源状态、事件影响、验证义务、复核规划与功能判定 |
 | [事件影响闭包](design/impact-closure.md) | D01 的数学定义、传播规则、原因路径与十一类纸面案例 |
 | [通道净宽证据判据](design/corridor-evidence.md) | D02 的证据槽、充分性、有效期、标定计划与十一类纸面案例 |
-| [MSRP 数学模型](design/msrp-model.md) | D03 的有限候选域、完整路线、三值可行性和最优性判据 |
-| [MSRP 纸面案例](validation/msrp-cases.md) | 二十类证据分配、路线成本、无解与最优性边界检查 |
+| [MSRP 数学模型](design/msrp-model.md) | 有限候选域、完整路线、三值可行性和最优性，以及从复核计划到机械狗行动的交接 |
+| [MSRP 纸面案例](validation/msrp-cases.md) | 二十类边界检查及机械狗在受控通道选站、采证和停止的合成算例 |
 | [D06 安全观测与无告警发现](design/observation-bootstrap.md) | 计划核验入口、独立安全依据、固定周期与提前复核、条件性时延、三条贯通场景和十一项边界 |
 | [D07 时空支持模型](design/spatiotemporal-support.md) | 保守几何包络、受控保持、时间误差与全域覆盖，四个核心场景和十二项边界 |
 | [D08 联合可靠性](design/joint-evidence-guarantee.md) | 有界误差集合、共享依赖、有限统计家族与停止规则，十五项纸面边界 |
@@ -27,7 +27,7 @@
 
 D01—D05 已完成限定模型、纸面复核、E2/E3 实验设计和跨模块终审，开题报告已同步。三个场景覆盖阻塞恢复、证据失效重开和禁令下物理畅通。后续 E1、E4、E5 已完成本轮实验设计细化，[跨阶段复核与实验准备清单](experiments/readiness.md)列出独立参考、参数来源和确定样本规模的条件。正式实验所需数据、数值界与样本量在取得后锁定。详细验收项和交付版本见 [GitHub 任务列表](https://github.com/javencpdd/spatial-function-research-design/issues)。
 
-**当前结论（2026-11-20）：** D06—D10 的本轮限定设计已完成。安全观测、时空支持、联合可靠性、多轮复核和 [D10 地图消费实例](design/map-consumption.md) 已衔接；地图版本变化不自动迁移证据或用途决定。结论限受控通道、声明的输入条件及纸面推演，不代表所有校园场景可确认。本地开题报告、14 页答辩稿及配套讲稿、问答已对齐。已发布[受控直通道研究资料规格](experiments/corridor-data-spec.md)。下一项是核对首个实际场景的资料来源、独立参考及可支持的用途。见[全线复审及完成范围](design/review-baseline.md)。
+**当前进展（2026-11-22）**　D06—D10 已完成限定设计。安全观测、时空支持、联合可靠性、多轮复核和[地图消费实例](design/map-consumption.md)已衔接。当前先做 MSRP 离线参考求解与策略回放，已有[机械狗选站和补测算例](validation/msrp-cases.md#机械狗复核策略算例)。真实通道的授权、标定与独立参考按[资料规格](experiments/corridor-data-spec.md)并行核验。各步交付和验收见[任务计划](ROADMAP.md#当前工作顺序)，原限定设计的完成范围见[全线复审](design/review-baseline.md)。
 
 当前证据覆盖限定设计复核和纸面案例。参数标定与对照实验结果待取得。正式契约签发、外部互操作、服务开发和实机集成按工程线另行管理。
 
