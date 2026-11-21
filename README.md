@@ -20,6 +20,7 @@
 | [E1 双源维护实验](experiments/dual-source-e1.md) | 双轴真值与知识切点、区间分支、主要对照、错误开放/封闭及弃权评分，十五项纸面复核 |
 | [E4 恢复与重开实验](experiments/recovery-e4.md) | 局部义务、重评/重开/替代/复发、三条时钟、错误恢复及非干扰，十八项纸面复核 |
 | [E5 条件可用性实验](experiments/availability-e5.md) | 请求与条件方案、五态证明、时窗/风险/应用及危险误放行评分，二十三项纸面复核 |
+| [S1—S8 工具复用与平台分工](experiments/readiness.md#tool-reuse) | 各模块可复用组件、领域代码、版本许可、本地调用及用户负责的建图、定位和导航 |
 | [研究设计终审与全线复审](design/review-baseline.md) | D05 三个场景及同步记录；§6 记录 Notion/GitHub 联审、规则修正与 D06—D10 当前进展 |
 | [设计任务计划](ROADMAP.md) | D01—D05、E1/E4/E5 的历史交付，及当前 D06—D10 设计顺序 |
 
@@ -30,5 +31,7 @@ D01—D05 已完成限定模型、纸面复核、E2/E3 实验设计和跨模块�
 **当前进展（2026-11-22）**　D06—D10 已完成限定设计。安全观测、时空支持、联合可靠性、多轮复核和[地图消费实例](design/map-consumption.md)已衔接。当前先做 MSRP 离线参考求解与策略回放，已有[机械狗选站和补测算例](validation/msrp-cases.md#机械狗复核策略算例)。真实通道的授权、标定与独立参考按[资料规格](experiments/corridor-data-spec.md)并行核验。各步交付和验收见[任务计划](ROADMAP.md#当前工作顺序)，原限定设计的完成范围见[全线复审](design/review-baseline.md)。
 
 当前证据覆盖限定设计复核和纸面案例。参数标定与对照实验结果待取得。正式契约签发、外部互操作、服务开发和实机集成按工程线另行管理。
+
+用户负责 Lite3 或 M20 Pro 的建图、定位和导航。研究侧在其地图、位姿、观测及任务接口上完成义务、规划、验收和用途判定。现成图计算、几何与求解组件可复用，具体领域规则及平台交接见[逐模块核验](experiments/readiness.md#tool-reuse)。
 
 [研究与设计主页](https://app.notion.com/p/41280c1f022081a68d6ae9a03edc2484) · [系统级架构与研究验证](https://app.notion.com/p/41280c1f02208133947fcd37c92e8289) · [架构与契约任务](https://app.notion.com/p/41480c1f02208164b52beacba8d8374f)
