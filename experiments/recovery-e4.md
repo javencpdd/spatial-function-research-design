@@ -209,6 +209,6 @@ $\delta_R>0$ 为有实际意义的恢复延迟改善；$m_I,m_U\ge0$ 为允许�
 | 参数与统计 | D02 测量/时效标定，七项主界数值及来源、目标混合、组划分、预实验方差/配对关联、样本量和有效区间方法。 |
 | 结果记录 | 输入/协议提交、每次评价与状态转移的精确修订、作用域、见证分配、原因与前因、当前输出、三条时钟、组级错误与负结果。 |
 
-本轮完成上述设计选择和十八项纸面复核，正式 Schema/Registry 采纳、真实跨实现/Consumer 及实机运行仍按既有门槛取证。后续 [E5 条件可用性实验](availability-e5.md)已完成本轮设计，实验准备见[统一清单](readiness.md)。
+§7 保存十八项纸面复核。恢复、重开及投影时钟的现场资料按本节与[实验准备清单](readiness.md)核验。
 
 来源：[S4 MET §8—12、§9.6](https://app.notion.com/p/41280c1f022081febf3ae621f1e7c71a)、[S1—S8 §5、§8、§C-02](https://app.notion.com/p/41280c1f02208119a944debf8b5ca294)、[D02](../design/corridor-evidence.md)、[D05](../design/review-baseline.md)、[E1](dual-source-e1.md)、[总体方案](protocol.md)。

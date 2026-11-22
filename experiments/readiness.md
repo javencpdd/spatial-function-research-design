@@ -68,57 +68,39 @@
 
 ## 6. S1—S8 工具复用核验（2026-11-22）
 
-按 [S1—S8 现行职责](https://app.notion.com/p/41280c1f02208119a944debf8b5ca294)逐项核查官方文档、代码、许可证和发布文件。用户明确本轮主要判据为**工具能力能否覆盖目标、源码/软件/权重能否取得和使用、部署环境是否有支持路径**。暂无现场数据时，实际精度、时延和闭环效果留给后续实验，当前无需把每个工具运行一遍。用户负责 Lite3 或 M20 Pro 的建图、定位和导航；研究侧消费地图、位姿、测量和执行结果。已知平台及适配边界见 §6.12。
-
-**可行性判断**　首轮受控通道所需的数据读写、几何计算、图计算、约束求解和事务存储均有公开可获取的实现，选型层面支持继续研究。语义模型有公开源码和权重入口，但其输出、输入前提及 Thor 兼容性须按 §6.11–6.12 区分。S3/S4/S5/S7 的证据资格、义务、MSRP 和用途规则仍需编写，这部分属于研究方法本身。整体工具与接口尚不能标为全部齐备。研究原型可在一个进程内保留八项逻辑职责，不要求八套服务。
+本节记录源码、发布文件、许可和基础调用的核查范围。几何、图计算、求解及存储已有可获取组件。研究算法、参数和平台数据适配按[研究任务计划](../ROADMAP.md#research-delivery)验证。[S1—S8 职责](https://app.notion.com/p/41280c1f02208119a944debf8b5ca294)
 
 ### 6.1 S1 多源接入与回放
 
-- **现成能力**　rosbag2 负责 ROS 2 消息录制与回放，MCAP Python 库负责文件读写。Rosbags 可独立解析 ROS 1/2 记录，其官方说明允许在未安装 ROS 的研究机上使用。输入为传感器消息、消息定义和时间戳，输出为可读取的观测序列。[rosbag2](https://github.com/ros2/rosbag2)、[MCAP](https://mcap.dev/docs/python/)、[Rosbags](https://ternaris.gitlab.io/rosbags/)
-- **需要补写**　将平台消息、维修记录和许可表映射为研究对象，保存原始采样时点、坐标、来源、修订和幂等键，处理缺项和隔离。MCAP 文件格式本身无法核实传感器授权、时钟误差或测量质量。
-- **扩展范围**　IFC 解析和 GIS 格式转换有 IfcOpenShell、GDAL。校园业务系统的权限及字段仍须按实际来源适配。首轮可从一份许可表和一组带尺度观测开始。[IfcOpenShell](https://docs.ifcopenshell.org/)、[GDAL](https://gdal.org/en/stable/)
+ROS 2 可用 rosbag2 录制，文件由 MCAP 或 Rosbags 读取。Rosbags 可离线读取 ROS 1/2 记录。消息与管理表仍需映射为有来源、采样时间、坐标、修订及幂等键的研究输入。授权和时钟误差要随来源核验。IFC/GIS 的扩展解析可另用 IfcOpenShell/GDAL。[rosbag2](https://github.com/ros2/rosbag2) · [MCAP](https://mcap.dev/docs/python/) · [Rosbags](https://ternaris.gitlab.io/rosbags/) · [IfcOpenShell](https://docs.ifcopenshell.org/) · [GDAL](https://gdal.org/en/stable/)
 
 ### 6.2 S2 地图、坐标、空间关联与版本
 
-- **现成能力**　用户负责建图与定位。研究侧可用 pyproj 转换已定义的 CRS，Shapely 求二维区域相交、包含与距离，NetworkX 保存空间及功能依赖。需要点云预处理、配准或空间距离计算时可调用 Open3D。输入为地图及变换、区域和关联，输出为可查询几何和依赖。[pyproj Transformer](https://pyproj4.github.io/pyproj/stable/api/transformer.html)、[Shapely](https://shapely.readthedocs.io/en/stable/manual.html)、[Open3D](https://www.open3d.org/docs/release/tutorial/geometry/pointcloud.html)
-- **需要补写**　稳定身份、不可变地图修订、CellLineage、依赖关系的含义、旧证据重锚定和误差传播。CRS 转换和 ICP 各有数值算法，但其输出仍须具备适用范围和误差依据。[地图消费实例](../design/map-consumption.md)
-- **适用边界**　Shapely 的几何运算忽略高度。受控通道可在已核实的高度带上使用二维几何，完整三维净空和遮挡需由三维数据及相应模型支持。pyproj 的坐标变换也须核查轴序及实际坐标定义。[Shapely 维度说明](https://shapely.readthedocs.io/en/stable/manual.html#geometric-objects)、[pyproj 轴序与精度说明](https://pyproj4.github.io/pyproj/stable/api/transformer.html)
+pyproj 用于已知 CRS，须核验轴序。Shapely 处理平面几何，高度和三维覆盖由实际数据另查。Open3D 可处理点云和配准，配准适用性和误差需另有依据。版本、稳定身份、谱系与旧证据重评按 D10 实现。[pyproj](https://pyproj4.github.io/pyproj/stable/api/transformer.html) · [Shapely](https://shapely.readthedocs.io/en/stable/manual.html#geometric-objects) · [D10](../design/map-consumption.md)
 
 ### 6.3 S3 观测、证据与双源状态
 
-- **现成能力**　Open3D 提供点云距离、聚类、平面分割与配准，可从已对齐的测量中构建几何变化线索。jsonschema 检查证据记录的字段、类型和结构。已核查 Open3D v0.20.0 有公开发布及当前 Python 安装包。[Open3D 点云处理](https://www.open3d.org/docs/release/tutorial/geometry/pointcloud.html)、[v0.20.0 发布](https://github.com/isl-org/Open3D/releases/tag/v0.20.0)、[jsonschema](https://python-jsonschema.readthedocs.io/en/stable/validate/)
-- **需要补写**　APCM 管理许可与物理状态的协调、观测到 Evidence 的资格检查、证据时效及冲突、功能状态投影和原因链。几何变化线索进入候选复核，再结合要求及合格测量确定功能状态。
-- **主要困难**　阈值跨越、遮挡、定位漂移和共享标定影响实际证据。首轮需取得有尺度的观测及独立参考，核验宽度误差、整个范围的支持和保守保持条件。视觉类别检测可补充线索，净宽验收需有相应尺度和误差依据。[证据判据](../design/corridor-evidence.md)、[联合可靠性](../design/joint-evidence-guarantee.md)
+Open3D 提供距离、聚类、分割和配准，jsonschema 校验记录结构。APCM 双源、时效、冲突与证据资格要按研究规则实现。实际净宽需尺度、误差、完整覆盖和保持依据。[Open3D](https://www.open3d.org/docs/release/tutorial/geometry/pointcloud.html) · [jsonschema](https://python-jsonschema.readthedocs.io/en/stable/validate/) · [证据判据](../design/corridor-evidence.md)
 
 ### 6.4 S4 事件、验证义务与验收
 
-- **现成能力**　NetworkX 提供有向图遍历和可达集。SQLite 支持事务、唯一键和持久记录，jsonschema 提供输入结构检查，可支撑单机研究状态机。[NetworkX 遍历](https://networkx.org/documentation/stable/reference/algorithms/traversal.html)、[SQLite 事务](https://www.sqlite.org/lang_transaction.html)
-- **需要补写**　事件的有类型确定/可能影响闭包，复核清单的要求、范围、时窗和来源限制，验收谓词，Task 与义务的生命周期及恢复重开。通用图遍历需要消费这些领域规则。[影响闭包](../design/impact-closure.md)、[验收判据](../design/corridor-evidence.md)
-- **可行性判断**　基础图算法与事务机制已有实现。义务和验收规则属于主要研究工作，应先用现有反例验证。一个原始记录经两种算法重算后的来源限制，须由研究模型表达并检查。
+NetworkX 支持有向图遍历，SQLite 支持本地事务及去重。S4 的确定/可能影响、义务作用域、联合见证验收与恢复须按 D01/D02 表达。对同一原件重算时保留其同源身份。[NetworkX](https://networkx.org/documentation/stable/reference/algorithms/traversal.html) · [SQLite](https://www.sqlite.org/lang_transaction.html) · [D01](../design/impact-closure.md) · [D02](../design/corridor-evidence.md)
 
 ### 6.5 S5 最小充分复核规划（MSRP）
 
-- **现成能力**　OR-Tools CP-SAT 提供整数、布尔和逻辑约束求解，支持可行、最优、无解及超时未知等求解状态。NetworkX 可计算已给定通行图上的路径。输入为有限动作/时间域、证据资格和资源，输出为所编码模型的解及求解状态。[CP-SAT 官方文档](https://developers.google.com/optimization/cp/cp_solver)
-- **需要补写**　将论文的完整路线和联合见证分配编码为模型，构建确定及乐观资格视图，处理旧证据复用、共享来源、实际验收时效、结束路线和多轮决策。整数化须保守保持时窗、预算与误差语义。词典序目标可分阶段求解，上一阶段最优性未证时须保留该缺口。[MSRP 模型](../design/msrp-model.md)、[多轮策略](../design/multiround-review-policy.md)
-- **主要困难**　CP-SAT 的 INFEASIBLE 只证明所编码模型无解。研究侧需同时举证候选域覆盖及资格上界。原生 UNKNOWN、模型错误和研究中的资格未知也需分别保留原因。大候选域的求解时限、预测成本和实耗偏差需对照实验，当前没有规模性能结果。
+CP-SAT 可求解整数约束。按 D03 编码完整路线、截止、终点、预算、联合见证及其确定和可能资格。整数化保守处理数据界，按阶段验证词典序目标。求解状态需结合候选覆盖解释，分别报告求解超时、模型错误和输入资格未知。预计成本与实耗待实测。[CP-SAT](https://developers.google.com/optimization/cp/cp_solver) · [D03](../design/msrp-model.md) · [D09](../design/multiround-review-policy.md)
 
 ### 6.6 S6 机器人任务执行
 
-- **分工**　用户负责 Lite3 或 M20 Pro 的建图、定位和导航代码。研究侧生成复核目标、观测配置和约束，通过适配层提交任务并读取结果。
-- **可借鉴的公开接口**　Nav2 Simple Commander 已有目标点导航、取消、反馈与结束查询的调用方式。云深处公开资源列出了对应型号的运控部署和建图代码。具体采用何种平台接口由用户代码决定。[Nav2 调用接口](https://docs.nav2.org/jazzy/configuration_and_development/simple_commander_api/simple_commander_api/)、[云深处官方资源](https://developer.deeprobotics.cn/docs/)
-- **需要补写并验收**　研究计划到导航/观测任务的适配、精确任务身份与修订、实际结束和采证回执、资源记录、取消及失联处理。公开 robotserver_sdk 文档关联 X30 Pro，Lite3 MotionSDK 则提供关节控制；这些资料尚无法证明本项目已有可调用的导航目标接口。[RobotServer 适用说明](https://github.com/DeepRoboticsLab/robotserver_sdk/blob/main/README.zh-CN.md)、[Lite3 MotionSDK](https://github.com/DeepRoboticsLab/Lite3_MotionSDK)
+用户提供建图、定位和导航，研究侧适配观测任务及结束、取消、失联与数据回执。Nav2 Simple Commander 是可借鉴接口。公开 RobotServer 对应 X30 Pro，Lite3 MotionSDK 提供关节控制。实际导航目标接口以用户平台代码及联调为准。[Nav2](https://docs.nav2.org/jazzy/configuration_and_development/simple_commander_api/simple_commander_api/) · [云深处资料](https://developer.deeprobotics.cn/docs/) · [RobotServer](https://github.com/DeepRoboticsLab/robotserver_sdk/blob/main/README.zh-CN.md) · [Lite3 MotionSDK](https://github.com/DeepRoboticsLab/Lite3_MotionSDK)
 
 ### 6.7 S7 任务条件可用性与导航约束
 
-- **现成能力**　Shapely 和 NetworkX 可计算平面路径与区域关系，SQLite 可保存一致的单机快照。用户的导航器消费研究侧给出的允许范围和约束；若采用 Nav2，其 KeepoutFilter 提供禁入区实现，可作为一种接入方式。[Nav2 禁入区](https://docs.nav2.org/rolling/tutorials/general_tutorials/navigation2_with_keepout_filter/navigation2_with_keepout_filter/)
-- **需要补写**　将管理许可、S3 状态、S4 义务、机器人能力、扫掠范围和整个任务时窗组合为禁止、受阻、待定、有条件可用或可用，保存理由和版本。研究侧还需验证导航器已应用当次约束，以及更正到达后旧决定如何失效。[任务可用性实验](availability-e5.md)
-- **主要困难**　导航器可以找到一条几何路径，任务判定仍需完整证据与时窗支持。两者通过明确接口衔接；路径可执行性及停止语义需随平台实测。
+空间工具和本地快照支撑查询，Nav2 KeepoutFilter 是可选的禁入区接口。研究侧依据许可、状态、义务、扫掠域和整个占用窗给出五态与版本理由。接入时核验约束应用、更新失效和结束回执。[Nav2 禁入区](https://docs.nav2.org/rolling/tutorials/general_tutorials/navigation2_with_keepout_filter/navigation2_with_keepout_filter/) · [E5](availability-e5.md)
 
 ### 6.8 S8 制品、策略、存储与审计
 
-- **现成能力**　SQLite 提供单机事务，文件存储与标准 SHA-256 提供制品读取及摘要计算，已有 rfc8785、jsonschema 依赖可用于 JCS 和结构校验。扩大策略管理时可评估 OPA，其 Rego 引擎执行显式提供的策略。[SQLite ACID](https://www.sqlite.org/transactional.html)、[JCS 实现](https://pypi.org/project/rfc8785/)、[OPA](https://www.openpolicyagent.org/docs)
-- **需要补写**　制品与策略版本索引、适用范围、可信读取、访问策略、撤销与完整审计关联。SHA-256 可检测字节不一致，可信来源和授权须另有依据。单库事务可支持单机研究，跨服务的一致快照、真实 ACL 和 Owner 交接仍需集成验证。
-- **本地基础**　现有契约包的历史结果记录为 275/275 项匹配，含 JCS、引用策略、本地 Owner 事务与 loopback 服务。此处引用已有记录，本轮另查了依赖可导入性及基础库行为。真实机器人、校园数据和外部 Consumer 的采纳仍待取证。
+SQLite、文件摘要、rfc8785 和 jsonschema 可作原型基础，扩展策略可评估 OPA。制品适用性、可信读取、访问、撤销与 Owner 交接需要各自依据。既有契约试点记录 275/275 项本地匹配，覆盖 JCS、引用、Owner 事务和本地 HTTP 验证。真实 Resolver、ACL 和外部 Consumer 待取证。[OPA](https://www.openpolicyagent.org/docs) · [FV-01 试点证据](https://app.notion.com/p/41480c1f0220811ca1c8d15c84168cfd)
 
 ### 6.9 版本、源码获取与已有调用记录
 

@@ -189,6 +189,6 @@ E1-15 的更新过程回执与固定 q 的状态输出分别记录，主评分�
 
 ## 8. 交付与后续
 
-完成本轮范围、双时间参考、首轮推断规则、强弱对照、端点/分母、统计继承、十五项纸面复核及启动条件。已有权威 Owner、字段 Manifest 与正式 Schema 均不因实验分析标签而改变。后续 [E4 恢复与失效重开](recovery-e4.md)与 [E5 条件可用性](availability-e5.md)已完成本轮设计，复用本协议的输入资格与独立真值，分别增加状态机与任务时钟。实验准备见[统一清单](readiness.md)。
+§6 保存十五项纸面复核。按 §7 取得独立参考及标定后开展 E1 预实验。双源输入可供 E4 与 E5 复用，两项实验另核验恢复及任务时钟。[实验准备清单](readiness.md) · [E4](recovery-e4.md) · [E5](availability-e5.md)
 
 来源：[APCM §4—12、§15、§F-02—F-07](https://app.notion.com/p/41280c1f022081289425e18657438273)、[D02](../design/corridor-evidence.md)、[总体实验方案](protocol.md)、[D05 终审](../design/review-baseline.md)。

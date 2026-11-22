@@ -227,6 +227,6 @@ $$
 
 ## 9. 本轮交付与后续
 
-D04 已明确研究假设映射、独立真值、隔离与集成对照、指标和分母、失败处理、统计选择、风险界与样本量取得方法。数值待定项目均有来源及锁定步骤。D05 已检查架构闭环与目标映射，并同步开题报告 §3.9、研究摘要与进度口径，见[研究设计终审](../design/review-baseline.md)。E1、E4、E5 已完成本轮细化，分别有十五项、十八项、二十三项纸面复核；跨阶段复核、参数来源与封存条件见[统一实验准备清单](readiness.md)。
+按 §8 锁定实际输入、独立参考和参数后启动实验。采集交付见[通道资料规格](corridor-data-spec.md)，标定与封存见[实验准备清单](readiness.md)，历史交付见[任务计划](../ROADMAP.md#已交付任务与范围)。
 
 研究来源见 [研究主页 §1.2](https://app.notion.com/p/41280c1f022081a68d6ae9a03edc2484)、[APCM §F-05–F-07](https://app.notion.com/p/41280c1f022081289425e18657438273)、[D01](../design/impact-closure.md)、[D02](../design/corridor-evidence.md) 和 [D03](../design/msrp-model.md)。
