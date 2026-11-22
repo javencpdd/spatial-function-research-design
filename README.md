@@ -1,37 +1,15 @@
-# 验证义务驱动的空间功能状态维护研究
+# 校园空间功能状态的按需复核与更新方法
 
-本仓库管理面向动态校园巡检的研究设计。在版本化地图上关联管理许可和现场证据，识别影响范围，生成验证义务，选择满足证据与安全要求的复核方案，再判断指定机器人能否在任务时窗内使用空间。
+研究在版本化地图上关联管理许可与现场证据，按事件影响生成验证义务，规划采证并更新状态，再判断指定机器人能否在任务时窗内使用空间。首轮采用受控直通道净宽、单个义务修订和一个机器人配置。实验比较义务驱动复核与固定周期巡检的确认时间及验证成本，并共同核查漏检和危险误放行。
 
-首轮以通道类空间为例，一次处理一个验证义务修订，采用一个已选定的机器人能力配置。研究重点是检验义务驱动复核能否在漏检和危险误放行风险受控的条件下减少复核代价。
+D01—D10 的限定模型与 E1—E5 实验设计已经完成。近期工作是明确工具输出到研究输入的接口、实现离线算法，并准备首条真实测量链。完整算法和现场结果待验证。
 
-| 材料 | 内容 |
+| 查阅内容 | 入口 |
 | --- | --- |
-| [研究模型基线](design/model-baseline.md) | 完整业务流程、已定研究方法及 A 联合约束、B 贪心、C 任务与运动联合规划、D POMDP 的备选比较 |
-| [事件影响闭包](design/impact-closure.md) | D01 的数学定义、传播规则、原因路径与十一类纸面案例 |
-| [通道净宽证据判据](design/corridor-evidence.md) | D02 的证据槽、充分性、有效期、标定计划与十一类纸面案例 |
-| [MSRP 数学模型](design/msrp-model.md) | 有限候选域、完整路线、三值可行性和最优性，以及从复核计划到机械狗行动的交接 |
-| [MSRP 纸面案例](validation/msrp-cases.md) | 二十类边界检查及机械狗在受控通道选站、采证和停止的合成算例 |
-| [D06 安全观测与无告警发现](design/observation-bootstrap.md) | 计划核验入口、独立安全依据、固定周期与提前复核、条件性时延、三条贯通场景和十一项边界 |
-| [D07 时空支持模型](design/spatiotemporal-support.md) | 保守几何包络、受控保持、时间误差与全域覆盖，四个核心场景和十二项边界 |
-| [D08 联合可靠性](design/joint-evidence-guarantee.md) | 有界误差集合、共享依赖、有限统计家族与停止规则，十五项纸面边界 |
-| [D09 多轮复核策略](design/multiround-review-policy.md) | 缺口、实质签名、完整采证与有界等待、在途处理及全过程成本，四条过程与十四项边界 |
-| [D10 地图消费与研究边界](design/map-consumption.md) | 拆分/重表达、误差更正、覆盖与净宽、证据复用及 S7，十六项边界与贡献范围 |
-| [实验设计](experiments/protocol.md) | D04 的 E2/E3 真值、对照、统计、风险与样本量方案，关联 H1—H4/E1—E6 |
-| [E1 双源维护实验](experiments/dual-source-e1.md) | 双轴真值与知识切点、区间分支、主要对照、错误开放/封闭及弃权评分，十五项纸面复核 |
-| [E4 恢复与重开实验](experiments/recovery-e4.md) | 局部义务、重评/重开/替代/复发、三条时钟、错误恢复及非干扰，十八项纸面复核 |
-| [E5 条件可用性实验](experiments/availability-e5.md) | 请求与条件方案、五态证明、时窗/风险/应用及危险误放行评分，二十三项纸面复核 |
-| [S1—S8 工具复用与平台分工](experiments/readiness.md#tool-reuse) | 功能覆盖、源码/软件/权重获取、许可，以及 Ubuntu 20.04 主机、Thor T4000 与工作站的兼容边界 |
-| [研究设计终审与全线复审](design/review-baseline.md) | D05 三个场景及同步记录；§6 记录 Notion/GitHub 联审、规则修正与 D06—D10 当前进展 |
-| [课题研究任务计划](ROADMAP.md#research-delivery) | 后续九阶段任务、算法与数据并行关系、完成条件及分工；保留 D01—D10 与 E1/E4/E5 的历史设计交付 |
+| 后续任务、分工与完成条件 | [课题研究任务计划](ROADMAP.md#research-delivery) |
+| 工作流程、业务输入、现行方法及备选 | [研究模型基线](design/model-baseline.md#workflow) · [方法比较](design/model-baseline.md#method-options) |
+| 实验、现场资料及工具 | [总体实验协议](experiments/protocol.md) · [通道资料规格](experiments/corridor-data-spec.md) · [准备清单与工具](experiments/readiness.md) |
+| 可复算案例与设计决议 | [MSRP 案例](validation/msrp-cases.md) · [设计终审与全线复审](design/review-baseline.md) · [已交付设计索引](ROADMAP.md#已交付任务与范围) |
+| 全局架构、对象归属与契约状态 | [Notion 研究主页](https://app.notion.com/p/41280c1f022081a68d6ae9a03edc2484) · [架构与契约任务](https://app.notion.com/p/41480c1f02208164b52beacba8d8374f) |
 
-初始基线整理自开题报告和 Notion 现行笔记。Notion 继续维护全局架构、契约权威来源与历史档案。仓库以可比较的文本维护研究设计基线，修改时同时更新受影响的案例或实验判据，并在提交中说明理由。研究结论引用具体提交版本。
-
-D01—D05 已完成限定模型、纸面复核、E2/E3 实验设计和跨模块终审，开题报告已同步。三个场景覆盖阻塞恢复、证据失效重开和禁令下物理畅通。后续 E1、E4、E5 已完成本轮实验设计细化，[跨阶段复核与实验准备清单](experiments/readiness.md)列出独立参考、参数来源和确定样本规模的条件。正式实验所需数据、数值界与样本量在取得后锁定。详细验收项和交付版本见 [GitHub 任务列表](https://github.com/javencpdd/spatial-function-research-design/issues)。
-
-**当前进展（2026-11-22）**　D06—D10 已完成限定设计。安全观测、时空支持、联合可靠性、多轮复核和[地图消费实例](design/map-consumption.md)已衔接。[已定方法及备选](design/model-baseline.md#method-options)已区分现行 A 主线、B 快速备选及对照、C/D 有条件扩展。[九阶段研究计划](ROADMAP.md#research-delivery)据此直接推进输入接口、证据/义务/状态规则及 MSRP 离线算法；地图整理和首批真实资料并行，之后进入真实回放、单项平台作业、闭环及正式实验。已有[机械狗选站和补测算例](validation/msrp-cases.md#机械狗复核策略算例)，完整算法与现场实验尚待完成。真实通道的授权、标定与独立参考按[资料规格](experiments/corridor-data-spec.md)核验，原限定设计的完成范围见[全线复审](design/review-baseline.md)。
-
-当前证据覆盖限定设计复核、纸面案例及已注明范围的基础组件调用。参数标定与对照实验结果待取得。研究所需算法、数据处理及单平台衔接已纳入任务计划；正式契约签发、跨实现互操作和生产服务按工程线另行管理。
-
-用户负责 Lite3 或 M20 Pro 的建图、定位和导航。研究侧在其地图、位姿、观测及任务接口上完成义务、规划、验收和用途判定。现成图计算、几何与求解组件可复用，具体领域规则及平台交接见[逐模块核验](experiments/readiness.md#tool-reuse)。
-
-[研究与设计主页](https://app.notion.com/p/41280c1f022081a68d6ae9a03edc2484) · [系统级架构与研究验证](https://app.notion.com/p/41280c1f02208133947fcd37c92e8289) · [架构与契约任务](https://app.notion.com/p/41480c1f02208164b52beacba8d8374f)
+用户负责 Lite3 或 M20 Pro 的建图、定位和导航。研究侧消费地图、位姿、原始观测及任务回执，负责事件义务、复核规划、验收和状态判断。[工具复用及平台交接](experiments/readiness.md#tool-reuse)

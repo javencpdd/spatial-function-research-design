@@ -1,8 +1,6 @@
 # 研究模型基线
 
-本文件整理当前限定设计。D01 已统一事件影响闭包，D02 已定义通道净宽证据判据，D03 已收敛有限候选路线、三值可行性和成本比较，D04 已形成 E2/E3 实验方案，D05 已完成跨模块纸面终审与报告同步。2026-11-20 更新：D06—D10 已完成本轮限定设计，安全观测、时空支持、联合可靠性、多轮策略和地图消费已衔接；实际参数与适用资格另行取证。报告与答辩已对齐五项限定设计，研究输入及评分参考见[受控直通道研究资料规格](../experiments/corridor-data-spec.md)。见[研究设计终审 §6](review-baseline.md)和[设计任务计划](../ROADMAP.md)。
-
-2026-11-22 补充：[已定方法与备选方案](#method-options)区分已采用的主线、已有对照与新保留的扩展。主方法已明确，下一步是实现和现实参数取得；备选评估不重新打开已收敛的全部设计。
+本文记录受控通道的业务流程、数学模型及实现选择。采集与独立评分按[通道资料规格](../experiments/corridor-data-spec.md)准备，设计交付和待做任务统一见[研究任务计划](../ROADMAP.md)。[现行方法与备选](#method-options)给出采用条件。
 
 <a id="workflow"></a>
 
@@ -25,9 +23,7 @@
 
 S8 为各步保存原始制品、策略与标定修订、摘要及审计关联。S7 也在第 7–8 步为复核作业用途提供约束。流程中的先后描述表示业务依赖，运行时各模块可多次交互。完整模型分别见下文 R1–R3、[D06](observation-bootstrap.md)、[MSRP](msrp-model.md)及[资料规格](../experiments/corridor-data-spec.md#management-inputs)。
 
-基础库的官方来源、版本、许可和六组本机调用见[工具复用核验](../experiments/readiness.md#tool-reuse)。jsonschema 提供[结构校验](https://python-jsonschema.readthedocs.io/en/stable/validate/)，NetworkX 提供[图遍历](https://networkx.org/documentation/stable/reference/algorithms/traversal.html)，Shapely 提供[空间索引和谓词查询](https://shapely.readthedocs.io/en/stable/strtree.html)，OR-Tools 提供[约束求解](https://developers.google.com/optimization/cp/cp_solver)。本课题将功能要求、资格和状态规则编码后调用这些工具。
-
-2026-11-22 补充平台条件：机械狗主机为 Ubuntu 20.04，算力盒子为 Thor T4000 / JetPack 7.2 / L4T Ubuntu 24.04，外部主机可按需选择。建议把机器人执行、现场采集及按需感知、工作站研究计算分开部署。当前按能力、源码/权重获取及兼容路径评估工具；实际数据效果另行实验。官方获取入口、感知输出边界和双主机兼容性见[工具能力](../experiments/readiness.md#tool-capability)及[平台分工](../experiments/readiness.md#platform-layout)。
+基础库的来源、许可、安装版本及本机调用范围集中维护在[工具复用核验](../experiments/readiness.md#tool-reuse)，机器人主机、Thor 和工作站的环境及交接见[平台分工](../experiments/readiness.md#platform-layout)。
 
 ### 第 3–10 步的限定串联检查
 
@@ -132,7 +128,7 @@ D09 先重评新到资料，保持一次一条在途路线；在合格完整采�
 
 ## 已定方法与备选方案
 
-更新日期：2026-11-22。此前路线图“明确采用的方法”容易使已完成选择看起来尚未开始，本节核定当前主线并补充备选。下述备选是方法设计及可获取性核查，尚未完成本课题实现、性能比较或机器人验证。论文及工具提供可复用机制；与本课题的具体连接由本节提出，不归作原作者已经验证的能力。
+2026-11-22 已定主线与备选设计。备选的现场适用性和性能待验证。
 
 ### 已经确定的主方法
 
