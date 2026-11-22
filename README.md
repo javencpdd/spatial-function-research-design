@@ -6,7 +6,7 @@
 
 | 材料 | 内容 |
 | --- | --- |
-| [研究模型基线](design/model-baseline.md) | 从地图准备、维修/许可输入到复核及状态更新的完整流程，以及各研究模型 |
+| [研究模型基线](design/model-baseline.md) | 完整业务流程、已定研究方法及 A 联合约束、B 贪心、C 任务与运动联合规划、D POMDP 的备选比较 |
 | [事件影响闭包](design/impact-closure.md) | D01 的数学定义、传播规则、原因路径与十一类纸面案例 |
 | [通道净宽证据判据](design/corridor-evidence.md) | D02 的证据槽、充分性、有效期、标定计划与十一类纸面案例 |
 | [MSRP 数学模型](design/msrp-model.md) | 有限候选域、完整路线、三值可行性和最优性，以及从复核计划到机械狗行动的交接 |
@@ -28,7 +28,7 @@
 
 D01—D05 已完成限定模型、纸面复核、E2/E3 实验设计和跨模块终审，开题报告已同步。三个场景覆盖阻塞恢复、证据失效重开和禁令下物理畅通。后续 E1、E4、E5 已完成本轮实验设计细化，[跨阶段复核与实验准备清单](experiments/readiness.md)列出独立参考、参数来源和确定样本规模的条件。正式实验所需数据、数值界与样本量在取得后锁定。详细验收项和交付版本见 [GitHub 任务列表](https://github.com/javencpdd/spatial-function-research-design/issues)。
 
-**当前进展（2026-11-22）**　D06—D10 已完成限定设计。安全观测、时空支持、联合可靠性、多轮复核和[地图消费实例](design/map-consumption.md)已衔接。后续[九阶段研究计划](ROADMAP.md#research-delivery)已整理：先具体化方法与输入接口，完成证据/义务/状态规则及 MSRP 离线算法；地图整理和首批真实资料并行，之后进入真实回放、单项平台作业、闭环及正式实验。已有[机械狗选站和补测算例](validation/msrp-cases.md#机械狗复核策略算例)，完整算法与现场实验尚待完成。真实通道的授权、标定与独立参考按[资料规格](experiments/corridor-data-spec.md)核验，原限定设计的完成范围见[全线复审](design/review-baseline.md)。
+**当前进展（2026-11-22）**　D06—D10 已完成限定设计。安全观测、时空支持、联合可靠性、多轮复核和[地图消费实例](design/map-consumption.md)已衔接。[已定方法及备选](design/model-baseline.md#method-options)已区分现行 A 主线、B 快速备选及对照、C/D 有条件扩展。[九阶段研究计划](ROADMAP.md#research-delivery)据此直接推进输入接口、证据/义务/状态规则及 MSRP 离线算法；地图整理和首批真实资料并行，之后进入真实回放、单项平台作业、闭环及正式实验。已有[机械狗选站和补测算例](validation/msrp-cases.md#机械狗复核策略算例)，完整算法与现场实验尚待完成。真实通道的授权、标定与独立参考按[资料规格](experiments/corridor-data-spec.md)核验，原限定设计的完成范围见[全线复审](design/review-baseline.md)。
 
 当前证据覆盖限定设计复核、纸面案例及已注明范围的基础组件调用。参数标定与对照实验结果待取得。研究所需算法、数据处理及单平台衔接已纳入任务计划；正式契约签发、跨实现互操作和生产服务按工程线另行管理。
 
