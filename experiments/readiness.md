@@ -66,121 +66,52 @@
 
 <a id="tool-reuse"></a>
 
-## 6. S1—S8 工具复用核验（2026-11-22）
+## 6. 首轮采用的工具与领域适配
 
-本节记录源码、发布文件、许可和基础调用的核查范围。几何、图计算、求解及存储已有可获取组件。研究算法、参数和平台数据适配按[研究任务计划](../ROADMAP.md#research-delivery)验证。[S1—S8 职责](https://app.notion.com/p/41280c1f02208119a944debf8b5ca294)
+更新于 2026-11-27。保留能支撑当前路线的工具入口、用途和缺口。原下载探测、安装包枚举和逐轮调用日志不再作为现行设计内容；历史版本可从 Git 追溯。工具公开可获取不代表本项目的数据、平台兼容或研究效果已经通过。
 
-### 6.1 S1 多源接入与回放
-
-ROS 2 可用 rosbag2 录制，文件由 MCAP 或 Rosbags 读取。Rosbags 可离线读取 ROS 1/2 记录。消息与管理表仍需映射为有来源、采样时间、坐标、修订及幂等键的研究输入。授权和时钟误差要随来源核验。IFC/GIS 的扩展解析可另用 IfcOpenShell/GDAL。[rosbag2](https://github.com/ros2/rosbag2) · [MCAP](https://mcap.dev/docs/python/) · [Rosbags](https://ternaris.gitlab.io/rosbags/) · [IfcOpenShell](https://docs.ifcopenshell.org/) · [GDAL](https://gdal.org/en/stable/)
-
-### 6.2 S2 地图、坐标、空间关联与版本
-
-pyproj 用于已知 CRS，须核验轴序。Shapely 处理平面几何，高度和三维覆盖由实际数据另查。Open3D 可处理点云和配准，配准适用性和误差需另有依据。版本、稳定身份、谱系与旧证据重评按 D10 实现。[pyproj](https://pyproj4.github.io/pyproj/stable/api/transformer.html) · [Shapely](https://shapely.readthedocs.io/en/stable/manual.html#geometric-objects) · [D10](../design/map-consumption.md)
-
-### 6.3 S3 观测、证据与双源状态
-
-Open3D 提供距离、聚类、分割和配准，jsonschema 校验记录结构。APCM 双源、时效、冲突与证据资格要按研究规则实现。实际净宽需尺度、误差、完整覆盖和保持依据。[Open3D](https://www.open3d.org/docs/release/tutorial/geometry/pointcloud.html) · [jsonschema](https://python-jsonschema.readthedocs.io/en/stable/validate/) · [证据判据](../design/corridor-evidence.md)
-
-### 6.4 S4 事件、验证义务与验收
-
-NetworkX 支持有向图遍历，SQLite 支持本地事务及去重。S4 的确定/可能影响、义务作用域、联合见证验收与恢复须按 D01/D02 表达。对同一原件重算时保留其同源身份。[NetworkX](https://networkx.org/documentation/stable/reference/algorithms/traversal.html) · [SQLite](https://www.sqlite.org/lang_transaction.html) · [D01](../design/impact-closure.md) · [D02](../design/corridor-evidence.md)
-
-### 6.5 S5 最小充分复核规划（MSRP）
-
-CP-SAT 可求解整数约束。按 D03 编码完整路线、截止、终点、预算、联合见证及其确定和可能资格。整数化保守处理数据界，按阶段验证词典序目标。求解状态需结合候选覆盖解释，分别报告求解超时、模型错误和输入资格未知。预计成本与实耗待实测。[CP-SAT](https://developers.google.com/optimization/cp/cp_solver) · [D03](../design/msrp-model.md) · [D09](../design/multiround-review-policy.md)
-
-### 6.6 S6 机器人任务执行
-
-用户提供建图、定位和导航，研究侧适配观测任务及结束、取消、失联与数据回执。Nav2 Simple Commander 是可借鉴接口。公开 RobotServer 对应 X30 Pro，Lite3 MotionSDK 提供关节控制。实际导航目标接口以用户平台代码及联调为准。[Nav2](https://docs.nav2.org/jazzy/configuration_and_development/simple_commander_api/simple_commander_api/) · [云深处资料](https://developer.deeprobotics.cn/docs/) · [RobotServer](https://github.com/DeepRoboticsLab/robotserver_sdk/blob/main/README.zh-CN.md) · [Lite3 MotionSDK](https://github.com/DeepRoboticsLab/Lite3_MotionSDK)
-
-### 6.7 S7 任务条件可用性与导航约束
-
-空间工具和本地快照支撑查询，Nav2 KeepoutFilter 是可选的禁入区接口。研究侧依据许可、状态、义务、扫掠域和整个占用窗给出五态与版本理由。接入时核验约束应用、更新失效和结束回执。[Nav2 禁入区](https://docs.nav2.org/rolling/tutorials/general_tutorials/navigation2_with_keepout_filter/navigation2_with_keepout_filter/) · [E5](availability-e5.md)
-
-### 6.8 S8 制品、策略、存储与审计
-
-SQLite、文件摘要、rfc8785 和 jsonschema 可作原型基础，扩展策略可评估 OPA。制品适用性、可信读取、访问、撤销与 Owner 交接需要各自依据。既有契约试点记录 275/275 项本地匹配，覆盖 JCS、引用、Owner 事务和本地 HTTP 验证。真实 Resolver、ACL 和外部 Consumer 待取证。[OPA](https://www.openpolicyagent.org/docs) · [FV-01 试点证据](https://app.notion.com/p/41480c1f0220811ca1c8d15c84168cfd)
-
-### 6.9 版本、源码获取与已有调用记录
-
-官方仓库元数据显示，本次核查的 NetworkX、OR-Tools、Open3D、Shapely、pyproj、jsonschema、rosbag2 和 Nav2 均未归档，并有 2026 年更新。维护记录支持它们作为候选组件继续评估，版本兼容与具体功能以选定发行版为准。
-
-| 组件 | 本轮核查的版本或接口 | 源码、许可与获取方式 |
+| 环节 | 采用的组件与来源 | 研究侧仍需实现或验证 |
 | --- | --- | --- |
-| NetworkX | 3.7，Python ≥3.12，排除 3.14.1 | [源码 / BSD-3-Clause](https://github.com/networkx/networkx)、[安装包与源码包](https://pypi.org/project/networkx/3.7/#files) |
-| OR-Tools | 9.15.6755，Python ≥3.9；CP-SAT 不要求商业求解器 | [源码 / Apache-2.0](https://github.com/google/or-tools)、[安装包](https://pypi.org/project/ortools/9.15.6755/#files) |
-| Shapely / pyproj | 2.2.0 / 3.8.0，分别要求 Python ≥3.11 / ≥3.12 | [Shapely 源码 / BSD-3-Clause](https://github.com/shapely/shapely)、[pyproj 源码 / MIT](https://github.com/pyproj4/pyproj)，均有 PyPI 安装包及源码包 |
-| Open3D | 0.20.0；在线 release 教程仍显示 0.19.0，按实际发行版锁定 | [源码 / MIT](https://github.com/isl-org/Open3D)、[安装包](https://pypi.org/project/open3d/0.20.0/#files) |
-| MCAP / Rosbags | 1.6.0 / 0.11.10，分别要求 Python ≥3.7 / ≥3.10 | [MCAP 源码 / MIT](https://github.com/foxglove/mcap)、[Rosbags 源码 / Apache-2.0](https://gitlab.com/ternaris/rosbags)，均有 PyPI 安装包及源码包 |
-| jsonschema / rfc8785 | 4.26.0 / 0.1.4，分别要求 Python ≥3.10 / ≥3.8 | [jsonschema 源码 / MIT](https://github.com/python-jsonschema/jsonschema)、[rfc8785 源码 / Apache-2.0](https://github.com/trailofbits/rfc8785.py)，均有 PyPI 安装包及源码包 |
-| SQLite / Python 标准库 | sqlite3、csv、json、uuid、hashlib；SQLite 的具体版本随 Python 构建记录 | [SQLite 源码与工具](https://www.sqlite.org/download.html)，public domain；[CPython 源码](https://github.com/python/cpython)，PSF License |
-| rosbag2 / Nav2 | 仅在采用相应 ROS 2 环境时使用，随 ROS 发行版锁定 | [rosbag2 源码 / Apache-2.0](https://github.com/ros2/rosbag2)、[Nav2 源码](https://github.com/ros-navigation/navigation2)；Nav2 各包含 Apache/BSD/LGPL 等许可，按实际选用包核对 |
+| 采集/回放 | [rosbag2](https://github.com/ros2/rosbag2)、[Rosbags](https://ternaris.gitlab.io/rosbags/)、[FFmpeg](https://ffmpeg.org/) | 实机话题、类型、原始时间、录制 QoS、视频 PTS、缺失与来源映射。Foxy 侧录包，Thor 可离线读取。 |
+| 几何建图 | [云深处 Lightning-LM](https://github.com/DeepRoboticsLab/lightning-lm-deep-robotics)，BSD-3-Clause；已有 [FAST-LIO2](https://github.com/hku-mars/FAST_LIO)，GPL-2.0，成果可按相同接口交接 | 优先验证 M20 配置的离线建图；Thor Humble 容器、每点时间、外参与尺度需实际验证。固定一个几何基线。 |
+| 几何/地图整理 | [Open3D](https://www.open3d.org/docs/release/tutorial/geometry/pointcloud.html)，MIT；[CloudCompare](https://www.cloudcompare.org/release/index.html)，主体 GPL；[Shapely](https://shapely.readthedocs.io/en/stable/manual.html)，BSD | 几何候选、人工复核、稳定身份、关系与版本。Shapely 负责平面几何，高度和三维覆盖另行核验。 |
+| 事件/义务 | [NetworkX](https://networkx.org/documentation/stable/reference/algorithms/traversal.html)，BSD | D01 类型化确定/可能闭包、触发/模板、去重、原因及未决关系；图遍历库不直接生成领域义务。 |
+| MSRP | [OR-Tools CP-SAT](https://developers.google.com/optimization/cp/cp_solver)，Apache-2.0 | D03 完整路线、硬约束、联合见证、保守整数化、目标顺序和 D09 多轮策略；同条件贪心与小域独立参照。 |
+| 验收/状态/存储 | Python、[jsonschema](https://python-jsonschema.readthedocs.io/en/stable/validate/)、[SQLite](https://www.sqlite.org/lang_transaction.html)、文件摘要 | D02/D07/D08 的覆盖、误差、共因与时间资格，APCM、失效重评及 S7 五态；结构通过不能替代业务通过。 |
+| 任务执行 | 用户提供的 M20 定位导航接口、GOS 适配程序 | 目标和坐标、期限、许可、实际采集、取消及安全结束回执。接口尚待对接，不预设通用 Nav2 接口已可直接控制 M20。 |
 
-本轮另核对 PyPI 发行文件。OR-Tools、Shapely、pyproj 和 Open3D 的上述版本均提供 **CPython 3.12、Linux x86-64 与 aarch64** 安装包；NetworkX、MCAP、Rosbags、jsonschema 和 rfc8785 提供通用 Python wheel。该事实确认顶层包可获取；依赖解析、Open3D 的机器学习算子以及 GPU 支持需另外匹配。文件名、官方地址、SHA-256 和源码检查范围保存在[获取记录](../validation/tool-acquisition.json)。
-
-本机检查采用 Windows x86-64、Python 3.14.5。原环境已有 NumPy、SQLite，以及工作区中的 jsonschema 4.26.0 和 rfc8785 0.1.4。本轮在项目隔离目录安装了表中的 NetworkX、OR-Tools、Shapely、pyproj 和 MCAP，连同 NumPy 2.5.5 等解析依赖，完成六组最小调用。
-
-| 调用核验 | 合成输入与预期 | 本次结果 |
-| --- | --- | --- |
-| 图遍历 | Event → Cell → Width → Passage，并设置回边及一个无关节点 | 可达集含三个目标，环遍历结束，无关节点被排除 |
-| 空间覆盖 | 4 m 原域、`[0.02,3.98]` m 中段、另一份完整覆盖；另设仅高度变化的线段 | 中段未覆盖全域、缺失平面面积为 0.04 m²，完整覆盖成立；高度变化被二维长度忽略 |
-| CRS 转换 | 经纬度按明确轴序转投影坐标再回转 | 往返最大误差约 1.42×10⁻¹⁴ 度；该值只度量这次数值回转 |
-| 求解器 | 三份候选见证至少取二，两份同源至多取一，新增独立见证成本为 4 | 选择旧完整见证与新增独立见证，目标值 4，OPTIMAL；禁用独立见证得 INFEASIBLE；求解时限为零得 UNKNOWN |
-| 数据读写及结构 | MCAP 写入再读出一条 JSON 观测，记录两种时间；另给一个类型错误记录 | 观测和两个时间保留，错误字段类型被 jsonschema 拒绝 |
-| 事务及摘要 | JCS 规范化后计算 SHA-256，SQLite 分别回滚与提交记录 | 回滚后记录数为零，提交的摘要可原样读回 |
-
-六组已有调用均符合预期，范围为工作站上的基础库和合成输入；此前八个串联场景的范围见[模型基线](../design/model-baseline.md#workflow)。本轮 Open3D 0.20.0 与 Rosbags 0.11.10 已在工作区独立目录完成下载及安装，未据此宣称完成点云、ROS 记录或现场数据验证。用户明确本轮以能力、获取方式与环境分析为主，未继续逐工具执行测试。完整研究算法、ROS 2/Nav2、语义模型、扩展组件和实际平台仍按各自范围记录。
-
-### 6.10 与用户平台代码的交接及研究结论
-
-| 交接内容 | 需提供或共同核验的字段及行为 |
-| --- | --- |
-| 地图与关联 | 几何或点云、稳定引用与地图修订、坐标系和单位、变换与适用时间、变更范围。研究侧据此创建版本/证据关联。 |
-| 定位与原始观测 | 位姿和采样时间、时间误差、观测原始资料、传感器及外参/标定版本、实际观测范围和有效性。 |
-| 导航与观测作业 | 目标站点、允许路线/区域、测量配置、起止时窗，接收、执行、取消、结束及位置未确认的回执。 |
-| 能力与代价 | 机器人尺寸/扫掠包络、可用模态、路线和采样的预计耗时/能量及实耗，控制授权和独立本地安全边界。 |
-
-首轮实施可采用“用户平台输出 → S1 导入 → S2 关联版本 → S3 整理观测 → S4 生成义务及验收 → S5 调用现成求解器 → S6 平台适配 → S7 更新用途判定”，由 S8 保存全过程。研究计算可在工作站运行，再通过接口接入机器人。机器人上的 Python/ROS 版本独立锁定；例如 NetworkX 3.7 与 pyproj 3.8.0 的 Python 最低版本高于 Python 3.10，需要选择匹配版本或通过独立进程交换记录。
+完整交接顺序见 [M20 与 Thor 实验步骤](m20-thor-workflow.md)。S4 受理 S5 计划形成 Task，S6 执行，S3 登记证据，S4 验收；部署在同一主机不改变逻辑写入归属。
 
 <a id="tool-capability"></a>
 
-### 6.11 感知与人工复核工具的能力和获取边界
+### 可选感知与规划扩展
 
-| 工具与获取入口 | 可承担的具体步骤 | 仍需完成的衔接或选择 |
+首轮采用点云几何与人工确认。只有在几何流程无法满足所需类别/视角时才评估以下扩展；它们不阻塞首条净宽测量链。
+
+| 扩展 | 能提供什么 | 接入条件 |
 | --- | --- | --- |
-| [FAST-LIO2 官方仓库](https://github.com/hku-mars/FAST_LIO)，GPL-2.0 | LiDAR/IMU 里程计、几何点云和位姿，支持几何地图准备 | 用户负责。源码需递归取得 ikd-Tree 子模块，LiDAR 驱动、时间和外参随设备配置。原仓库为 ROS 1 体系；不由 Ubuntu 版本推断用户所用分支或 ROS 发行版。它不生成校园地点身份或功能要求。 |
-| [Open3D-ML 源码](https://github.com/isl-org/Open3D-ML)及[模型权重目录](https://github.com/isl-org/Open3D-ML/blob/main/model_zoo.md)，代码 MIT | RandLA-Net / KPConv 对点云作类别分割，辅助人工确认区域 | 权重按 SemanticKITTI、S3DIS 等数据集区分。必须选择输入特征、类别表、点密度和场景相符的配置；类别输出不自动生成“南门通道”的稳定身份、功能边界或依赖图。公开权重可取得；目录未单列权重使用条款，不能把代码 MIT 直接扩大为独立权重许可证明。 |
-| [Grounding DINO 源码](https://github.com/IDEA-Research/GroundingDINO)、[作者权重](https://huggingface.co/ShilongLiu/GroundingDINO)；[SAM 2 源码及权重](https://github.com/facebookresearch/sam2)，Apache-2.0 | 图像文字提示检测、掩码及跟踪，可帮助定位障碍和语义区域 | 需要 RGB；要落到三维地图，还需同步、内外参、位姿、可见性处理及跨帧关联。掩码不直接提供有误差界的净宽或通行许可。原版 DINO 离线依赖还包括文本编码器和分词器；应完整缓存。 |
-| [Grounded-SAM-2 组合示例](https://github.com/IDEA-Research/Grounded-SAM-2)，Apache-2.0 | 已有 DINO 检测框交给 SAM 2 分割的本地示例，无须从头实现模型组合 | 采用原版或 [Transformers 的 DINO](https://huggingface.co/docs/transformers/model_doc/grounding-dino)本地路径。仓库内 DINO 1.5/1.6、DINO-X 示例要求云 API Token，不列入首轮本地依赖。 |
-| [Open3D](https://github.com/isl-org/Open3D)，MIT | 点云读写、过滤、配准、平面拟合、聚类和距离计算，支撑变化候选和测量处理 | 需编写原始观测到通道净宽、保证覆盖、误差区间和证据记录的处理流程。点云距离变化、RANSAC 内点数或分割置信分数不直接等于合格证据。 |
-| [CloudCompare 官方下载](https://www.cloudcompare.org/release/index.html)及[源码](https://github.com/CloudCompare/CloudCompare)，主体 GPL | 提供人工点云分割、点选、距离检查，补齐“人工复核”所用界面 | 人确认区域、名称及关系；UUID 和身份表保存业务编号。GUI 中的标签不代替版本化实体记录。官方有 Windows 安装包/压缩包及 Linux 发行途径，本轮只核对文档与发布入口。 |
+| [Open3D-ML RandLA-Net/KPConv](https://github.com/isl-org/Open3D-ML) | 点云类别分割候选 | 权重类别、点密度和输入特征与校园场景匹配；实际 CPU/GPU 包及算子需验证。类别不自动成为实体身份或功能要求。 |
+| [Grounding DINO](https://github.com/IDEA-Research/GroundingDINO) + [SAM 2](https://github.com/facebookresearch/sam2) | RGB 检测、掩码及跨帧辅助 | 实际分辨率、内外参、采样时间、三维关联及 Thor 深度学习环境单独核验。普通单目视频不直接作为合格净宽测量。 |
+| PDDLStream / POMDP | 候选空间扩展或概率多轮决策 | 仅按[备选方法](../design/model-baseline.md#method-options)触发条件开展；当前 A 联合约束与 B 贪心优先。 |
 
-获取证据包括五个仓库的 **28 份关键源码、配置、许可与安装文件**，固定了对应提交。RandLA-Net、KPConv、Grounding DINO、SAM 2.1 Tiny 的官方权重地址均成功返回 HTTP 206 和前 4096 字节。服务器声明的完整大小分别为 5,101,179、146,956,897、693,997,677 和 156,008,466 字节。该检查确认文件可读取，未下载完整权重、校验整个权重或执行推理；详见[获取记录](../validation/tool-acquisition.json)。
-
-首轮采用点云几何与人工确认的通道作为研究输入，语义分割用于辅助准备。只有点云时评估对应点云模型；有同步 RGB 及标定时再选 DINO + SAM 2。两条语义路线是备选，不要求同时部署。IFC/GDAL、ConceptGraphs、OPA 和 TensorRT 加速不列为本轮必要依赖，避免把 BIM、多格式转换、开放场景图和模型部署优化并入核心研究工作。
+源码许可按各仓库核对，权重许可按所用发布物核对；不把代码许可自动扩大为所有权重许可。公开组件与项目领域算法分开验收。
 
 <a id="platform-layout"></a>
 
-### 6.12 Ubuntu 20.04 主机、Thor 与外部工作站
+## 7. 实测平台与剩余条件
 
-用户于 2026-11-22 提供当前设备配置。以下区分已知配置与建议部署，不据此改写厂商出厂规格或认定具体 ROS 发行版。
-
-| 节点 | 已知条件与建议职责 | 环境选择与边界 |
+| 平台 | 2026-11-27 已确认的基础 | 本轮计划 |
 | --- | --- | --- |
-| 机械狗主机 | Ubuntu 20.04；由用户负责运动、建图、定位、导航及底层接口 | 保留匹配现有驱动的环境；实际 CPU 架构、ROS 发行版和消息接口待按用户代码确认。研究侧不要求在此主机装全部算法库。 |
-| Thor T4000 算力盒子 | 用户提供 JetPack 7.2 / L4T Ubuntu 24.04；承担现场采集、缓存、任务适配与需要上车的感知 | ARM64；NVIDIA 官方列 T4000 计算能力为 11.0。CPU 研究库有 Python 3.12/aarch64 包；深度模型单独选相容的 PyTorch、CUDA 和扩展算子。ROS 2 Jazzy 可作为新增软件候选，并非已安装事实。 |
-| 外部工作站 | 用户允许按需选择；建议 Ubuntu 24.04 x86-64、Python 3.12，用于地图整理、人工复核、离线分割、MSRP 及实验分析 | CPU 研究环境与 GPU 感知环境分开锁定；感知环境随所选模型选择 Python/PyTorch/CUDA。首轮可在工作站运行模型，待确有上车推理需求再完成 Thor 迁移。工作站参与在线决策时须计入通信时延、失联处理及公平成本。 |
+| M20 AOS/NOS/GOS | 三台均 RK3588/ARM64、Ubuntu 20.04、Foxy 环境，约 16 GB RAM / 128 GB eMMC 标称等级；可见容量低于标称。 | AOS 保留运动与现有传感器服务，NOS 保留定位导航，GOS 录包与任务适配。 |
+| Thor T4000 | Ubuntu 24.04 / JetPack 7.2 系列，Docker 已有；宿主未发现 ROS。 | 独立 Humble CPU 建图容器、Python 研究环境及数据归档；兼容与持续负载待测。 |
+| 现有电脑 | 可承担人工审阅和文档/结果管理。 | CloudCompare 复核与编号；外部工作站只按组件需要使用，不作为新增采购前置。 |
 
-**官方平台依据。** [JetPack 7.2 发行页](https://developer.nvidia.com/embedded/jetpack/downloads/archive-7.2)列 T4000、L4T 39.2、Ubuntu 24.04、CUDA 13.2.1、TensorRT 10.16.2；[CUDA 硬件表](https://developer.nvidia.com/cuda/gpus)列 T4000 为 11.0。同站介绍文字仍有 CUDA 13.0 概述，本设计以发行页版本表作候选基线，实际设备版本后续核对。CUDA/TensorRT 属于可从 NVIDIA 获取的许可软件，不能统称整套平台全部开源；本阶段不依赖 TensorRT 模型转换。
+详细软件版本、设备配置及接口原件见 [Notion 平台记录](https://app.notion.com/p/41280c1f022081068737f619a3e65c32)。公开仓库不存主机地址、账号、密钥和现场原始影像。
 
-需要提前处理的兼容点如下。
+- **已确认的相机连接范围：** Thor 到 AOS 的两路 RTSP 描述请求成功、返回 H.264；本轮未完成持续解码/帧率和同步测量。既有本机相机笔记记录 800×600 流与 1280×720 内参不匹配，实际输出与标定必须配对核验。
+- **网络适用范围：** 暂用无线，按用户要求搁置 Thor 到机器人内网的路由处理。实验设计假设所需连通已具备，DDS、QoS、丢包与时间对齐仍是数据入口检查。
+- **环境适用范围：** 厂家 Lightning-LM 声明支持 Ubuntu 20.04/Foxy、22.04/Humble 及 ARM。拟议的 Thor 容器需编译和短包验证，不由 JetPack 或 Docker 已安装推导算法可用。深度学习和 TensorRT 优化按需要后置。
+- **测量与研究资格：** 尚缺同一通道的完整录包、独立参考、误差/保持依据和第二份合格独立见证。雷达多次扫描、视频或新文件名不自动增加独立性。
+- **执行与评分：** 导航目标、坐标转换、取消/停止和回执待验证。首轮可人工按计划到站，明确计入干预与外部供证成本；独立评分资料不提供给方法。
 
-1. **Open3D-ML 的环境说明不一致。** 核查提交 `a3d0f7a` 的 README 仍列 PyTorch 2.0.*，但 requirements-torch 固定 2.13.0，CUDA 文件固定 `2.13.0+cu126`。本机取得的 Windows Open3D 0.20.0 包也绑定 `2.13.0+cpu`。因此应锁定实际发布包和自定义算子版本；CPU 几何包存在不证明 ML 的 Thor GPU 算子可直接使用。[源码与依赖文件](https://github.com/isl-org/Open3D-ML/tree/a3d0f7a51d4eef0b94b9000a7d74af05e2d54c4f)
-2. **Thor 深度学习运行时还未冻结。** 本次读取的 [NVIDIA PyTorch 兼容表](https://docs.nvidia.com/deeplearning/frameworks/install-pytorch-jetson-platform-release-notes/pytorch-jetson-rel.html)最新条目仍标 JetPack 7.1，不能据此宣布某个容器已对用户的 7.2 配置验收。采用能覆盖实际驱动、ARM64 和 T4000 的官方构建，并核对 torchvision 与模型扩展；必要时在匹配环境编译扩展。GPU 型号和算力数值不能替代兼容证据。
-3. **可降低自定义算子依赖。** Grounded-SAM-2 提供 Transformers DINO 示例；其配置支持关闭自定义 kernel。SAM 2 官方允许不构建可选 CUDA 后处理扩展。这些是已有支持路径，是否采用及其后处理、延迟变化需在选定环境下记录，不等于本轮完成 Thor 推理。[DINO 配置](https://huggingface.co/docs/transformers/model_doc/grounding-dino#transformers.GroundingDinoConfig)、[SAM 2 安装说明](https://github.com/facebookresearch/sam2/blob/main/INSTALL.md)
-4. **双主机接口不能只凭 ROS 名称连接。** [Jazzy 官方安装源](https://github.com/ros2/ros2_documentation/blob/jazzy/source/Installation/Ubuntu-Install-Debs.rst)提供 Ubuntu 24.04 的 amd64/arm64 包。机械狗主机使用哪一代 ROS 尚不确定；[ros1_bridge 官方说明](https://github.com/ros2/ros1_bridge)明确 Ubuntu 24.04 不在其支持范围。优先使用用户提供的导航/观测接口与现行 Wire Contract 衔接；如果经 ROS 接入，另锁定消息类型、QoS、时钟和必要的桥接环境，不能默认 Foxy/Noetic 与 Jazzy 直接互通。
-
-**剩余实现边界。** 仍需把原始点云/图像变为具备尺度、覆盖和误差依据的证据，维护实体及版本，编写 APCM/义务和验收规则、完整 MSRP/多轮策略、任务条件查询与平台适配。现成工具已覆盖这些流程中的通用计算；具体研究逻辑不会由安装库自动获得。当前没有发现必须自研新的 SLAM、语义分割网络、图算法库或约束求解器的必要，研究范围仍以受控通道为准。
-
-需要优先取得的可行性证据是一次真实测量能否形成合格宽度及覆盖、同源限制下能否补齐原证据模板、用户导航器能否执行一项带约束的往返观测作业，以及 MSRP 在相同资格和资源下相对基线的效果。上述基础工具已存在，研究模型和平台交接仍有明确实现工作。当前支持开展限定原型与实验，研究效果和端到端实机闭环待后续结果判定。
+首条数据链完成后按 §2—4 取得参考、参数和样本规划，再进入封存实验。硬件识别、计划成稿和合成案例均不等同真实算法验证。

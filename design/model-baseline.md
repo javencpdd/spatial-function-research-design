@@ -6,11 +6,11 @@
 
 ## 从地图准备到持续运行的完整流程
 
-本节按首轮受控通道串接现行设计。建图、定位和导航由用户负责，研究侧实现输入关联、状态、验证义务、MSRP、验收与用途判断。语义分割工具已有公开实现候选，校园数据上的分割、人工校验和地图接入仍待完成。
+本节按首轮受控通道串接现行设计。建图、定位和导航由用户负责，研究侧实现输入关联、状态、验证义务、MSRP、验收与用途判断。首轮采用 M20 Pro + Thor 的几何和人工复核路线，具体主机、算法与交接见[实验步骤](../experiments/m20-thor-workflow.md)。语义模型按实际需要另行评估。
 
 | 步骤 | 输入及处理 | 可复用工具及需要编写的逻辑 | 产出与责任 |
 | --- | --- | --- | --- |
-| 1. 建立地图 | FAST-LIO2 点云及位姿，处理点云或同步图像的语义候选，校验时空信息及覆盖。 | FAST-LIO2；按数据选择 Open3D-ML，或 Grounding DINO/SAM 图像分割及三维投影。模型、数据转换、标定和融合需要匹配与试跑。 | 用户提供几何和定位；S2 接入地图及语义候选。 |
+| 1. 建立地图 | M20 雷达/IMU 录包生成点云与位姿，核验时间、尺度与覆盖。 | 优先验证厂家 Lightning-LM 的 M20 配置与 Thor Humble 容器；已合格 FAST-LIO2 成果可交接。Open3D 几何辅助与人工确认先行。 | 用户负责建图与定位，研究侧消费几何、版本和误差依据。 |
 | 2. 校验实体与关系 | 人工复核关键分割、校园名称、入口/出口、楼层和重要关系。 | CloudCompare 提供点云查看、人工分割及测距；Python UUID 生成新实体编号，SQLite 保存身份及别名，Shapely/NetworkX 计算几何关系及保存图；人确认对象和关键关联。 | S2 提交地图、关联、分区和关系图修订。 |
 | 3. 定义可验收要求 | 登记净宽等功能要求、范围、证据模板及窗口，机器人 Profile、有限动作、允许终点和成本。 | JSON 配置、jsonschema 结构与参数检查、SQLite 版本索引。研究者定义要求、证据语义及未知处理，程序读取配置。 | S4 引用要求及模板，S5/S6 取得动作及能力输入。 |
 | 4. 接入记录及首次观测 | S1 接入维修、许可、人工报告及观测，保留原件、来源和双时间；S2 解析地点。 | Python csv/json 读取业务表，jsonschema 校验，名称/ID 索引与 Shapely STRtree 精确空间查询；MCAP/Rosbags 读取观测。需编写来源和字段适配。 | 合格输入进入 S3/S4，歧义保留候选。首次观测也经同一验收链。 |
@@ -23,7 +23,7 @@
 
 S8 为各步保存原始制品、策略与标定修订、摘要及审计关联。S7 也在第 7–8 步为复核作业用途提供约束。流程中的先后描述表示业务依赖，运行时各模块可多次交互。完整模型分别见下文 R1–R3、[D06](observation-bootstrap.md)、[MSRP](msrp-model.md)及[资料规格](../experiments/corridor-data-spec.md#management-inputs)。
 
-基础库的来源、许可、安装版本及本机调用范围集中维护在[工具复用核验](../experiments/readiness.md#tool-reuse)，机器人主机、Thor 和工作站的环境及交接见[平台分工](../experiments/readiness.md#platform-layout)。
+当前组件的来源、用途及剩余适配集中维护在[工具复用核验](../experiments/readiness.md#tool-reuse)，机器人主机、Thor 和工作站的环境及交接见[平台分工](../experiments/readiness.md#platform-layout)。
 
 ### 第 3–10 步的限定串联检查
 
@@ -162,11 +162,11 @@ C 首先在与 A/B 相同的有限候选目录内检查语义一致性，再另�
 
 | 组件 | 本轮确认到的范围 | 仍需核验的部分 |
 | --- | --- | --- |
-| A/B 基础组件 | NetworkX、OR-Tools、Open3D、Shapely 等的源码/安装包/许可及部分本地调用已在[工具核验](../experiments/readiness.md#tool-reuse)记录。 | 当前领域逻辑和统一算法未完整实现；合成调用不证明校园精度或规模性能。 |
+| A/B 基础组件 | NetworkX、OR-Tools、Open3D、Shapely 等的源码/安装包/许可及部分本地调用已在[工具核验](../experiments/readiness.md#tool-reuse)记录。 | 当前领域逻辑和统一算法未完整实现；既有组件调用不证明校园精度或规模性能。 |
 | PDDLStream | 作者仓库公开，GPL-3.0；安装说明包括递归取得 Fast Downward 子模块并编译，提供公开示例。[源码及安装](https://github.com/caelan/pddlstream) | 具体提交、Python/编译器与所用扩展尚未为本项目锁定；时间约束、未知资格和成本映射需适配验证。 |
 | pomdp_py | 作者仓库公开，MIT；有 pip 及源码安装路径，Python/Cython 实现，文档提供 POUCT、POMCP 等求解器。[源码](https://github.com/h2r/pomdp-py)、[安装说明](https://h2r.github.io/pomdp-py/html/installation.html) | 仍需本课题的状态、观测、转移/生成、奖励模型及其校准。[模型接口](https://h2r.github.io/pomdp-py/html/api/pomdp_py.framework.html)；精确环境兼容未实测。 |
 
-本轮只审阅上述备选的论文、官方文档、代码入口与许可，没有安装或运行 C/D。优先在外部工作站研究，后续有上车需求才核对 Thor 环境；不改变用户负责建图、定位和导航的分工。
+C/D 保留为有条件扩展，尚未安装或运行。当前 A/B 按 [M20 与 Thor 实验步骤](../experiments/m20-thor-workflow.md)准备离线实现；环境不兼容组件可在现有工作站处理并记录环境。用户继续负责建图、定位和导航。
 
 ### 其他环节已有对照与启用条件
 
